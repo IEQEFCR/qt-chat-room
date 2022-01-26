@@ -71,16 +71,16 @@ void Server::getThenSendMsg(){ //转发函数
             if(msgToSend.isEmpty()) continue;
             msgToSend=cur_time.currentDateTime().toString().toUtf8().mid(7)+" "+client.front().name+"\n"+msgToSend;
             //加上时间信息和发送者的名字
+            for(int i=1;i<=client_size;i++){ //转发到所有客户端
+                client.front().socket->write(msgToSend,strlen(msgToSend));
+                client.push(client.front());
+                client.pop();
+            }
             history_msg.push(msgToSend);//加入到历史信息
         }
 
     }
-    if(msgToSend.isEmpty()) return ;
-    for(int i=1;i<=client_size;i++){ //转发到所有客户端
-        client.front().socket->write(msgToSend,strlen(msgToSend));
-        client.push(client.front());
-        client.pop();
-    }
+
 }
 
 void Server::sendMessage(){ //新客户端初始化
