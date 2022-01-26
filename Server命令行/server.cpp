@@ -54,16 +54,15 @@ void Server::getThenSendMsg(){
             }
             if(msgToSend.isEmpty()) continue;
             msgToSend=cur_time.currentDateTime().toString().toUtf8().mid(7)+" "+client.front().name+"\n"+msgToSend;
+
+            for(int i=1;i<=client_size;i++){
+                client.front().socket->write(msgToSend,strlen(msgToSend));
+                client.push(client.front());
+                client.pop();
+             }
             history_msg.push(msgToSend);
         }
 
-    }
-    if(msgToSend.isEmpty()) return ;
-
-    for(int i=1;i<=client_size;i++){
-        client.front().socket->write(msgToSend,strlen(msgToSend));
-        client.push(client.front());
-        client.pop();
     }
 }
 
